@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Student Dashboard{% endblock %}
+
+{% block content %}
+<h1>Available Jobs</h1>
+
+{% if jobs %}
+    {% for job in jobs %}
+    <div class="job-card">
+        <h3>{{ job.title }}</h3>
+        <div class="job-meta">Posted by: {{ job.company.username }}</div>
+        <p>{{ job.description }}</p>
+
+        {% if job.id in applied_job_ids %}
+            <span class="badge badge-applied">✔ Applied</span>
+        {% else %}
+            <form method="POST" action="{{ url_for('main.apply_job', job_id=job.id) }}" style="display:inline;">
+                <button type="submit" class="btn btn-success btn-sm">Apply Now</button>
+            </form>
+        {% endif %}
+    </div>
+    {% endfor %}
+{% else %}
+    <div class="card">
+        <p>No jobs posted yet. Check back later!</p>
+    </div>
+{% endif %}
+{% endblock %}

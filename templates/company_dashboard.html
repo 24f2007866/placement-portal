@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Company Dashboard{% endblock %}
+
+{% block content %}
+<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+    <h1>Your Job Postings</h1>
+    <a href="{{ url_for('main.post_job') }}" class="btn btn-success">+ Post New Job</a>
+</div>
+
+{% if jobs %}
+    <table>
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Job Title</th>
+                <th>Applicants</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for job in jobs %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ job.title }}</td>
+                <td>{{ job.applications | length }}</td>
+                <td>
+                    <a href="{{ url_for('main.view_applicants', job_id=job.id) }}"
+                       class="btn btn-primary btn-sm">View Applicants</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <div class="card">
+        <p>You haven't posted any jobs yet.
+           <a href="{{ url_for('main.post_job') }}">Post your first job →</a>
+        </p>
+    </div>
+{% endif %}
+{% endblock %}
